@@ -1,6 +1,10 @@
 Bases de données avancées
 Big Data: Hadoop/MapReduce
 
+# News
+
+20171127 - Click here to see the exact[homework](homework.md).
+
 # Prerequisites
 
 There are many issues to build and run this code (and Hadoop in general) in Windows so please use a recent linux system to develop the TP or
@@ -74,7 +78,7 @@ Use the given authorization credentials (with the user/password discussed in cla
 
 Linux
 
-    ssh gcn01@ec2-54-171-169-69.eu-west-1.compute.amazonaws.com
+    ssh gcn00@ec2-54-171-169-69.eu-west-1.compute.amazonaws.com
 
 Windows
 
@@ -90,13 +94,15 @@ http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html
 
 If everything is OK you must see the command prompt and the EMR symbols.
 
-2. Copy your jar file from your machine to the cluster
+2. Copy your file from your machine to the cluster
 
-    scp JARFILE login@server:
+    scp FILE login@server:
 
 e.g.
 
-    scp target/hadoop-tps-1.0.jar gcn00@ec2-IP.compute-1.amazonaws.com:
+    scp dataset/wordcount/hamlet.txt id##@ec2-IP.compute-1.amazonaws.com:
+
+(pay attention to the ':' at the end of the command)
 
 Remember to update the address with the one given in the course.
 
@@ -105,30 +111,30 @@ Remember to update the address with the one given in the course.
 We are going to run the wordcount example of the course, so we need first to add the file to the distributed file system.
 So first we must connect to the master server (ssh like in 1) and do:
 
-    hadoop fs -mkdir hdfs:///user/hadoop/id##
+    hadoop fs -mkdir hdfs:///user/id##/dataset/wordcount/
 
 or
 
-    hadoop fs -mkdir hdfs:///user/hadoop/gcn##
+    hadoop fs -mkdir hdfs:///user/gcn##/dataset/wordcount/
 
 depending on your master and group (##).
 
 Upload the file
 
-    hadoop fs -put LICENSE.txt hdfs://172.17.0.2:9000/tp/
+    hadoop fs -put hamlet.txt hdfs:///user/id##/dataset/wordcount/
     
 Verify the upload
 
-    hadoop fs -ls hdfs://172.17.0.2:9000/tp/
+    hadoop fs -ls hdfs:///user/id##/dataset/wordcount/
     
-This one for remote IPs (port 8020 or 9000)
+This one for remote IPs with the corresponding mapping (port 8020 or 9000)
 
     hadoop fs -ls hdfs://172.17.0.2/tp1/
 
-Advanced:
+You can browse the cluster web interfaces:
 
-Created a ssh proxy to see the Web Interface:
-
+Resource Manager - http://ec2-IP.eu-west-1.compute.amazonaws.com:8088/
+HDFS Name Node - http://ec2-IP.eu-west-1.compute.amazonaws.com:50070/
 
 ## Part 2 - Running a mapreduce job in YARN
 
@@ -138,15 +144,17 @@ The structure is:
 
     hadoop jar JAR_FILE CLASS input output
 
-    hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples*.jar wordcount hdfs://172.17.0.2:9000/tp1/LICENSE.txt hdfs://172.17.0.2:9000/tp1/output/$(date +%Y%m%d%H%M%S)
+    hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples*.jar wordcount hdfs:///user/id00/dataset/wordcount/hamlet.txt hdfs:///user/id00/output/wordcount/
 
-    hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples*.jar wordcount hdfs://172.17.0.2:9000/tp1/LICENSE.txt hdfs://172.17.0.2:9000/tp1/output
+The hadoop mapreduce examples is available in the following path in the cluster:
+
+    /usr/lib/hadoop-mapreduce/hadoop-mapreduce-examples.jar 
      
 Verify the output
 
-    hadoop fs -cat "hdfs://172.17.0.2:9000/tp1/output/part-*"
+    hadoop fs -cat hdfs:///user/id00/output/wordcount/*
 
-For example if the IP is 172.17.0.2 You find the web interfaces (this is for people with the vm or in the cluster):
+For example if the IP is 172.17.0.2 The following are the addresses for the different web interfaces (this applies for the VM or the Cluster):
 
 - NameNode http://172.17.0.2:50070/
 - ResourceManager http://172.17.0.2:8088/
