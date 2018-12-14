@@ -3,6 +3,7 @@ Big Data: Hadoop/MapReduce
 
 # News
 
+2018/12/14 TP Part 2 GDELT info added
 2018/12/06 TP Part 1 instructions added
 
 # Prerequisites
@@ -24,7 +25,7 @@ You can download the Virtual Machine also from this link (5.3 GB), remember that
 allocate at least 4GB to the VM:
 [https://downloads.cloudera.com/demo_vm/virtualbox/cloudera-quickstart-vm-5.8.0-0-virtualbox.zip]
 
-# TP Part 1
+# TP
 
 1. Finish the implementation of Wordcount as seen in the class and validate that it works well.
 
@@ -37,11 +38,34 @@ file dataset/hamlet.txt
 - What are the consequences of changing the code in each one ?
 - Compare the Hadoop counters and explain which one is the best strategy.
 
-3. Download other books or text files and process them.
+3. Use the GDELT dataset and implement a Map Reduce job the top 10 countries that have more
+relevance in the news for a given time period (one week, one day, one month).
 
-- Add a combiner to the job? Do you see any improvement in the counters ? Explain.
+For more info about gdelt column format you can find more info at:
+http://data.gdeltproject.org/documentation/GDELT-Data_Format_Codebook.pdf
 
-# Instructions
+You can find a small test sample of the dataset at tp/dataset/gdeltmini/20160529.export.csv
+that you can use to test your implementation.
+
+You can also download the full datasets from:
+http://data.gdeltproject.org/events/index.html
+
+We will consider the country code as the three letter identifier represented as Actor1CountryCode, we
+will count the relevance of an event based on its NumMentions column. So this become likes a
+WordCount where we count the NumMentions of each event per country to determine the Top 20. 
+
+Add a combiner to the job? Do you see any improvement in the counters ? Explain.
+
+4. Do an interesting analysis from the GDELT dataset.
+
+Take a look at the code book format, in particular the Actor/CAMEO codes, and find interesting analysis, some ideas:
+
+- Compare the number of news for a given pair of actors, do you remark some bias.
+- Compare religions, is news reporting biased for certain religions (see tone).
+- How much influence had some actor vs another (in pure count terms).
+
+
+# Cluster Instructions
 
 This assumes that your virtual machine IP is 172.17.0.2. You can try to access it from inside the virtual machine at 127.0.0.1
 

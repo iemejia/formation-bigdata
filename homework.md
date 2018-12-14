@@ -1,6 +1,6 @@
 Homework
 ========
 
-Details will be published before 14/12/2018
+Details will be published soon
 
 Due Date: TBD
