@@ -18,6 +18,11 @@ You must finish the GDELT exercise to calculate the top most relevant countries 
 
 	    ssh id##@IP_MENTIONED_IN_CLASS
 
+    In case you are in the university network you need to configure and pass by a proxy (bastion)
+
+        ssh -f -N -L 2222:IP_MENTIONED_IN_CLASS:443 #_____@bastion.univ-nantes.fr
+        ssh id##@localhost -p 2222
+
     Create a directory for your month files
 
         hadoop fs -mkdir -p hdfs:///user/id##/dataset/gdelt/
