@@ -3,6 +3,7 @@ Big Data: Hadoop/MapReduce
 
 # News
 
+2018/12/19 Published homework assignment based on TP Part 2 (GDELT). Due date 2019/01/11 Cluster available only until 2018/12/28.
 2018/12/14 TP Part 2 GDELT info added
 2018/12/06 TP Part 1 instructions added
 
