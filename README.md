@@ -3,6 +3,7 @@ Big Data: Hadoop/MapReduce
 
 # News
 
+2019/01/11 **Homework due date updated**. Due to the issues with the cluster environment we have simplified the TP to be done only in the local VM. **New due date is 18/01/2018**. Take a look at the [homework assignment](homework.md) for simplified instructions.
 2018/12/26 **Homework due date extended**. Due to some issues with the cluster environment we will postpone the due dates for the homework. Exact info will be published soon.  
 2018/12/19 [Published homework assignment](homework.md) based on TP Part 2 (GDELT).  
 2018/12/14 TP Part 2 GDELT info added.  

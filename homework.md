@@ -1,7 +1,7 @@
 Homework
 ========
 
-Due Date: 10/01/2018
+**Due Date: 18/01/2018**
 
 You must finish the GDELT exercise to calculate the top most relevant countries given their mentions from the TP and send me the following:
 
@@ -12,16 +12,15 @@ You must finish the GDELT exercise to calculate the top most relevant countries 
     Remember that the GDELT dataset is available here:
     http://data.gdeltproject.org/events/index.html
 
-    A summary of how to download and let the files:
+    Download the files corresponding to the month of your pair e.g. 
 
-    First connect to the cluster
+        wget http://data.gdeltproject.org/events/20180501.export.CSV.zip
+        wget http://data.gdeltproject.org/events/20180502.export.CSV.zip
+        ...
 
-	    ssh id##@IP_MENTIONED_IN_CLASS
+    Unzip and put the files in HDFS
 
-    In case you are in the university network you need to configure and pass by a proxy (bastion)
-
-        ssh -f -N -L 2222:IP_MENTIONED_IN_CLASS:443 #_____@bastion.univ-nantes.fr
-        ssh id##@localhost -p 2222
+        unzip "*.zip"
 
     Create a directory for your month files
 
@@ -29,7 +28,7 @@ You must finish the GDELT exercise to calculate the top most relevant countries 
 
     Copy the files to HDFS
 
-        hadoop fs -put /dataset/gdelt/2018##* hdfs:///user/id##/dataset/gdelt/
+        hadoop fs -put ./2018##* hdfs:///user/id##/dataset/gdelt/
 
     Check that the files were copied correctly
 
@@ -39,7 +38,7 @@ You must finish the GDELT exercise to calculate the top most relevant countries 
 
     	hadoop jar JARFILE “hdfs:///user/id##/dataset/gdelt/*”
 
-3. The metrics result after an execution in the cluster, this is the counter information that the job prints when you execute it (for example):
+3. The metrics result after an execution, this is the counter information that the job prints when you execute it (for example):
 
         17/01/13 09:23:18 INFO Job: Counters: 30
             File System Counters
@@ -52,8 +51,4 @@ You must finish the GDELT exercise to calculate the top most relevant countries 
                 Map input records=7062
                 …
 
-4. The metrics result after running the same program using as input Amazon's S3 GDELT repository. DON'T FORGET TO FILTER FOR THE EXACT MONTH or the job will take longer.
-
-    hadoop jar JARFILE "gs://formation-bigdata/gdelt/2018##*" hdfs://.../output/...
-
-5. Finally you must do a small report (a txt or doc file) explaining your program approach and what are the differences (if there are any) between executing the job locally vs in the cluster with the input on HDFS vs in the cluster with the input in S3. If possible explain how the job was partitioned.
+5. Finally you must do a small report (a txt or doc file) explaining your program approach and what are the differences (if there are any) between executing the job locally vs in the cluster with the input on HDFS. If possible execute the job by assigning more CPUs to the VM and explain if the job is partitioned differently and why.
