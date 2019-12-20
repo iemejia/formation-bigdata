@@ -3,6 +3,7 @@ Big Data: Hadoop/MapReduce
 
 # News
 
+2019/12/19 TP Part 2 instructions added
 2019/12/12 TP Part 1 instructions added
 
 # Prerequisites
@@ -98,11 +99,10 @@ For example if the IP is 172.17.0.2 The following are the addresses for the diff
 - MapReduce JobHistory Server http://172.17.0.2:19888/
 - Hue http://172.17.0.2:8888/
 
-# Part 2 (in progress)
 
-You can do it in pure Hadoop or with Spark (pyspark):
+# Part 2
 
-3. Use the GDELT dataset and implement a Map Reduce job the top 10 countries that have more
+3. Use the GDELT dataset and implement a Map Reduce job to find the top 10 countries that have more
 relevance in the news for a given time period (one week, one day, one month).
 
 For more info about gdelt column format you can find more info at:
@@ -118,9 +118,13 @@ We will consider the country code as the three letter identifier represented as 
 will count the relevance of an event based on its NumMentions column. So this become likes a
 WordCount where we count the NumMentions of each event per country to determine the Top 20. 
 
-If using Hadoop, add a combiner to the job? Do you see any improvement in the counters ? Explain.
+If using Hadoop, add a combiner to the job? Do you see any improvement in the counters? Explain and compare the values.
 
-4. Do an interesting analysis from the GDELT dataset.
+# Part 3 (Spark - In progress)
+
+4. Implement Part 2 using pyspark
+
+5. Do an interesting analysis from the GDELT dataset.
 
 Take a look at the code book format, in particular the Actor/CAMEO codes, and find interesting analysis, some ideas:
 
