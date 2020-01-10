@@ -255,11 +255,11 @@ Take a look at the code book format, in particular the Actor/CAMEO codes, and do
 
 You have to send me:
 
-1. The source code to do the GDELT analysis using the Dataframe/Dataset API (python file)
-2. The output of the execution (the top 10 most mentioned countries and number of mentions) (csv file)
-3. A screenshot of the DAG visualization of the job with a short explanation of the execution plan. Take a look at the final dataset + `.explain()` for ideas.
-4. The SQL query that makes the same analysis from the gdelt dataset.
-5. A screenshot where I can see the Duration of the CSV based job vs the Parquet based one. Add a one paragraph explanation if there is a significative difference.
+1. The source code to do GDELT's countries with most mentions analysis using the Dataframe/Dataset API (python file) and the output of the execution (csv file) [2]
+2. A screenshot of the DAG visualization of the job with a short explanation of the execution plan. Take a look at the final dataset + `.explain()` for ideas [2].
+3. A screenshot where I can see the duration of the CSV based job vs the Parquet based job. Add a short explanation to explain the differences (if any) [3].
+4. The SQL query that makes the same analysis (countries with most mentions) with the gdelt dataset [4].
+5. The code and results of the interesting analysis you did from the GDELT dataset [5].
 
 # References
 
