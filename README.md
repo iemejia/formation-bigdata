@@ -15,11 +15,20 @@ Install [Virtualbox](https://www.virtualbox.org/wiki/Downloads) and the provided
 
 You can download the Virtual Machine also from this link (5.3 GB), remember that you need to
 allocate at least 4GB to the VM:
-[https://downloads.cloudera.com/demo_vm/virtualbox/cloudera-quickstart-vm-5.8.0-0-virtualbox.zip]
+[https://downloads.cloudera.com/demo_vm/virtualbox/cloudera-quickstart-vm-5.13.0-0-virtualbox.zip]
 
-## Do it yourself on your own linux machine (less recommended)
+## Do it yourself on your own linux machine (for those struggling with the Hadoop VM)
 
-If you are in linux you can try to configure it by yourself:
+You can download a recent Linux image here and install it locally or in a VM:
+
+https://releases.ubuntu.com/20.04.1/ubuntu-20.04.1-desktop-amd64.iso
+
+After installing open a terminal and run:
+
+    sudo apt install openjdk-8-jdk mvn
+    sudo apt install python3
+
+WARNING: Please validate that you are using Java 8!
 
 - Verify you have a correct Java installation with the JAVA_HOME variable configured.
 - Install a Java IDE (IntelliJ or Eclipse), or a decent editor.
@@ -43,7 +52,7 @@ file dataset/hamlet.txt
 - What are the consequences of changing the code in each one ?
 - Compare the Hadoop counters results and explain which one is the best strategy.
 
-# Hadoop HDFS first steps
+# Hadoop HDFS first steps (Inside the Cloudera VM)
 
 We are going to run the wordcount example of the course, so we need first to add the file to the distributed file system.
 So first we must connect to the master server (ssh like in 1) and do:
@@ -119,4 +128,4 @@ WordCount where we count the NumMentions of each event per country to determine 
 
 For ref. Actor1CountryCode is column 7 and NumMentions is column 31 on the GDELT file format.
 
-If using Hadoop, add a combiner to the job? Do you see any improvement in the counters? Explain and compare the values.
+If using Hadoop, add a combiner to the job? Do you see any improvement in the counters? Explain and compare the values. What could go wrong?
