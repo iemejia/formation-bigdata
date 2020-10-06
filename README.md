@@ -52,7 +52,7 @@ file dataset/hamlet.txt
 - What are the consequences of changing the code in each one ?
 - Compare the Hadoop counters results and explain which one is the best strategy.
 
-# Hadoop HDFS first steps (Inside the Cloudera VM)
+## Hadoop HDFS first steps (Inside the Cloudera VM)
 
 We are going to run the wordcount example of the course, so we need first to add the file to the distributed file system.
 So first we must connect to the master server (ssh like in 1) and do:
@@ -107,6 +107,11 @@ For example if the IP is 172.17.0.2 The following are the addresses for the diff
 - MapReduce JobHistory Server http://172.17.0.2:19888/
 - Hue http://172.17.0.2:8888/
 
+## References
+
+- https://developer.yahoo.com/hadoop/tutorial/
+- http://blog.cloudera.com/blog/2009/08/hadoop-default-ports-quick-reference/
+
 
 # Part 2
 
@@ -129,3 +134,68 @@ WordCount where we count the NumMentions of each event per country to determine 
 For ref. Actor1CountryCode is column 7 and NumMentions is column 31 on the GDELT file format.
 
 If using Hadoop, add a combiner to the job? Do you see any improvement in the counters? Explain and compare the values. What could go wrong?
+
+
+# Part 3 (Spark)
+
+You will need a recent Linux installation. You can install a VM with Ubuntu >= 18.04 (available in the class) or use the lab computers (if you choose this route pay attention to paths that are unreadable in the machine in particular the one where you install the project).
+
+## Environment setup
+
+Create a python virtualenv
+
+    python -m venv spark-env
+
+Activate the venv
+
+    source spark-env/bin/activate
+
+Upgrade setup tools
+
+    pip install --upgrade pip setuptools wheel
+
+Install dependencies
+
+    pip install pyspark jupyter ipython black
+
+## You can now work with pyspark for that you can use one of three options (you choose one):
+
+- Interactive Python (ipython) REPL [RECOMMENDED]
+
+    ipython
+
+- Interactive Notebook
+
+    jupyter notebook
+
+- Python editor / IDE
+
+If you use Visual Studio Code you must install the Python extension
+
+    code .
+
+## Getting familiar with pyspark
+
+Take a quick look at the Spark quick start guide to get familiar with Spark
+https://spark.apache.org/docs/latest/quick-start.html
+
+## Implement wordcount filtering the words that start with 'm' on pyspark
+
+Spark has two main APIs, for this exercise we use the RDD one.
+
+
+```python
+from pyspark.sql import SparkSession
+from pyspark.sql import functions as f
+
+spark = SparkSession.builder.master('local').appName('BigDataTP').getOrCreate()
+sc = spark.sparkContext
+
+text_file = sc.textFile("dataset/wordcount/hamlet.txt")
+text_file.collect()
+
+# Add your implementation here
+```
+
+Once you have the current results, take a look at the running jobs in the spark console:
+http://localhost:4040/jobs/
