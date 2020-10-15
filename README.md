@@ -176,26 +176,113 @@ If you use Visual Studio Code you must install the Python extension
 
 ## Getting familiar with pyspark
 
-Take a quick look at the Spark quick start guide to get familiar with Spark
+Take a quick look at the Spark quick start and RDD guides to get familiar with Spark
 https://spark.apache.org/docs/latest/quick-start.html
+https://spark.apache.org/docs/latest/rdd-programming-guide.html
 
 ## Implement wordcount filtering the words that start with 'm' on pyspark
 
 Spark has two main APIs, for this exercise we use the RDD one.
 
+    ```python
+    from pyspark.sql import SparkSession
+    from pyspark.sql import functions as f
 
-```python
-from pyspark.sql import SparkSession
-from pyspark.sql import functions as f
+    spark = SparkSession.builder.master('local').appName('BigDataTP').getOrCreate()
+    sc = spark.sparkContext
 
-spark = SparkSession.builder.master('local').appName('BigDataTP').getOrCreate()
-sc = spark.sparkContext
+    text_file = sc.textFile("dataset/wordcount/hamlet.txt")
+    text_file.collect()
 
-text_file = sc.textFile("dataset/wordcount/hamlet.txt")
-text_file.collect()
-
-# Add your implementation here
-```
+    # Add your implementation here
+    ```
 
 Once you have the current results, take a look at the running jobs in the spark console:
 http://localhost:4040/jobs/
+
+
+# Homework
+
+Implement the GDELT countries with most mentions analysis in PySpark using the Dataframe/Dataset API.
+You have to do the analysis for the month code assigned for your code, e.g. 202001 for group 01, etc.
+(if you are in group 13 take 201901, group 14 then 201902, etc.)
+
+You may find the identifiers for other columns here:
+https://github.com/aamend/spark-gdelt/blob/master/src/main/scala/com/aamend/spark/gdelt/GdeltParser.scala
+
+1. Download the files corresponding to the month of your pair e.g. 201901...
+
+    wget http://data.gdeltproject.org/events/20200101.export.CSV.zip
+    wget http://data.gdeltproject.org/events/20200102.export.CSV.zip
+    ...
+
+Unzip them and put them all the CSVs in the same directory
+
+    unzip "*.zip"
+    mv *.CSV dataset/gdelt
+
+2. Take a look at the dataframe/dataset/sql pyspark guides in particular the cheatsheet and get familiar with the different operations:
+
+- https://spark.apache.org/docs/latest/api/python/pyspark.sql.html
+- https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html
+- https://s3.amazonaws.com/assets.datacamp.com/blog_assets/PySpark_SQL_Cheat_Sheet_Python.pdf
+
+    ```python
+    gdelt = spark.read.option("delimiter", "\\t").csv('dataset/gdelt')
+    gdelt.printSchema
+
+    # Add your implementation
+    # 1. Filter the rows where Actor1CountryCode does not have a value
+    # 2. Group them by Actor1CountryCode
+    # 3. Sum them by NumMentions
+    # 4. Order by NumMentions and get the 10 more mentioned
+    # 5. Write the results to a CSV file
+    ```
+
+3. Convert the CSV data into Parquet format
+
+```python
+gdelt.write.parquet('dataset/gdelt-parquet')
+gdelt_parquet = spark.read.parquet('dataset/parquet')
+# 6. Run the same analysis of points (1-5) on the new `gdelt_parquet` dataset.
+```
+
+4. Do the SQL version of the analysis
+
+```python
+gdelt.createTempView('gdelt')
+spark.sql("SELECT ...").collect()
+```
+
+Your results should be the same than in the Dataset version if not double check.
+
+5. Do an interesting analysis from the GDELT dataset using Spark's Dataset API.
+
+Take a look at the code book format, in particular the Actor/CAMEO codes, and do an interesting new analysis, some ideas:
+
+- Compare the number of news for a given pair of actors, do you remark some bias.
+- Compare religions, is news reporting biased for certain religions (see tone).
+- How much influence had some country vs another (in pure count terms).
+- Top of organizations (group code) mentions per month.
+
+Use joins for this, you can find some reference tables for some codes e.g. ethnic, religion, knowngroup here:
+https://github.com/carrillo/Gdelt/tree/master/resources/staticTables
+
+You can find more info on join types on pyspark here:
+https://luminousmen.com/post/introduction-to-pyspark-join-types
+
+
+## Deliverable
+
+You have to send me a document with:
+
+1. The source code to do GDELT's countries with most mentions analysis using the Dataframe/Dataset API (python file) and the output of the execution (csv file) [2]
+2. A screenshot of the DAG visualization of the job with a short explanation of the execution plan. Take a look at the final dataset + `.explain()` for ideas [2].
+3. A screenshot where I can see the duration of the CSV based job vs the Parquet based job. Add a short explanation to explain the differences (if any) [3].
+4. The SQL query that makes the same analysis (countries with most mentions) with the gdelt dataset [4].
+5. The explanation, code and results of the interesting analysis you did from the GDELT dataset [5].
+What strategy was used by the join in your analysis (see explain() and detail).
+
+Extra points:
+If you did the GDELT analysis with Hadoop, please send me the code and the Hadoop counters of your execution.
+Are the results different? if so why?
