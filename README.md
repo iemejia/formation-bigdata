@@ -3,30 +3,20 @@ Bases de données avancées - Big Data: Hadoop/MapReduce
 
 # News
 
-2020/10/01 TP Parts 1-2 instructions added
+2021/10/13 TP instructions added
 
 # Prerequisites
 
-There are many issues to build and run this code (and Hadoop in general) in Windows so please use the recommended VM.
-
-## Recommended Virtual Machine
-
-Install [Virtualbox](https://www.virtualbox.org/wiki/Downloads) and the provided Virtual Machine.
-
-You can download the Virtual Machine also from this link (5.3 GB), remember that you need to
-allocate at least 4GB to the VM:
-[https://downloads.cloudera.com/demo_vm/virtualbox/cloudera-quickstart-vm-5.13.0-0-virtualbox.zip]
-
-## Do it yourself on your own linux machine (for those struggling with the Hadoop VM)
+There are many issues to build and run this code (and Hadoop in general) in Windows so please use Linux.
 
 You can download a recent Linux image here and install it locally or in a VM:
 
-https://releases.ubuntu.com/20.04.1/ubuntu-20.04.1-desktop-amd64.iso
+https://releases.ubuntu.com/20.04.3/ubuntu-20.04.3-desktop-amd64.iso
 
 After installing open a terminal and run:
 
     sudo apt install openjdk-8-jdk mvn
-    sudo apt install python3
+    sudo apt install python3 python3-venv python-is-python3
 
 WARNING: Please validate that you are using Java 8!
 
@@ -41,77 +31,16 @@ Clone this repo.
 
     git clone https://github.com/iemejia/formation-bigdata
 
-1. Finish the implementation of Wordcount as seen in the class and validate that it works well.
+1. Finish the implementation of Wordcount.java as seen in the class and validate that it works well.
 
 You can use a file of your own or download a book from the gutenberg project, you find also the example
 file dataset/hamlet.txt
 
 2. Modify the implementation to return only the words that start with the letter 'm'.
 
-- Where did you change it, in the mapper or in the reducer ?
-- What are the consequences of changing the code in each one ?
+- Where did you change it, in the mapper or in the reducer?
+- What are the consequences of changing the code in each one?
 - Compare the Hadoop counters results and explain which one is the best strategy.
-
-## Hadoop HDFS first steps (Inside the Cloudera VM)
-
-We are going to run the wordcount example of the course, so we need first to add the file to the distributed file system.
-So first we must connect to the master server (ssh like in 1) and do:
-
-    hadoop fs -mkdir hdfs:///user/id##/dataset/wordcount/
-
-or
-
-    hadoop fs -mkdir hdfs:///user/gcn##/dataset/wordcount/
-
-depending on your master and group (##).
-
-Upload the file
-
-    hadoop fs -put hamlet.txt hdfs:///user/id##/dataset/wordcount/
-
-Verify the upload
-
-    hadoop fs -ls hdfs:///user/id##/dataset/wordcount/
-
-This one for remote IPs with the corresponding mapping (port 8020 or 9000)
-
-    hadoop fs -ls hdfs://172.17.0.2/tp1/
-
-You can browse the cluster web interfaces:
-
-Resource Manager - http://172.17.0.2:8088/
-HDFS Name Node - http://172.17.0.2:50070/
-
-## Running a mapreduce job in the YARN cluster
-
-Copy the program to the cluster
-
-The structure is:
-
-    hadoop jar JAR_FILE CLASS input output
-
-    hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples*.jar wordcount hdfs:///user/id00/dataset/wordcount/hamlet.txt hdfs:///user/id00/output/wordcount/
-
-The hadoop mapreduce examples is available in the following path in the cluster:
-
-    /usr/lib/hadoop-mapreduce/hadoop-mapreduce-examples.jar
-
-Verify the output
-
-    hadoop fs -cat hdfs:///user/id00/output/wordcount/*
-
-For example if the IP is 172.17.0.2 The following are the addresses for the different web interfaces (this applies for the VM or the Cluster):
-
-- NameNode http://172.17.0.2:50070/
-- ResourceManager http://172.17.0.2:8088/
-- MapReduce JobHistory Server http://172.17.0.2:19888/
-- Hue http://172.17.0.2:8888/
-
-## References
-
-- https://developer.yahoo.com/hadoop/tutorial/
-- http://blog.cloudera.com/blog/2009/08/hadoop-default-ports-quick-reference/
-
 
 # Part 2
 
@@ -138,7 +67,7 @@ If using Hadoop, add a combiner to the job? Do you see any improvement in the co
 
 # Part 3 (Spark)
 
-You will need a recent Linux installation. You can install a VM with Ubuntu >= 18.04 (available in the class) or use the lab computers (if you choose this route pay attention to paths that are unreadable in the machine in particular the one where you install the project).
+You will need a recent Linux installation. You can install a VM with Ubuntu >= 20.04 (available in the class) or use the lab computers (if you use the lab computers pay attention to paths that are unreadable in the machine in particular the one where you install the project).
 
 ## Environment setup
 
@@ -160,9 +89,15 @@ Install dependencies
 
 ## You can now work with pyspark for that you can use one of three options (you choose one):
 
-- Interactive Python (ipython) REPL [RECOMMENDED]
+- Interactive Python REPL [RECOMMENDED]
 
-    ipython
+    pyspark
+
+If your pyspark terminal (REPL) does not auto complete when pressing the TAB key you may need to install:
+
+    sudo apt install libreadline-dev
+
+and restart
 
 - Interactive Notebook
 
@@ -174,6 +109,7 @@ If you use Visual Studio Code you must install the Python extension
 
     code .
 
+
 ## Getting familiar with pyspark
 
 Take a quick look at the Spark quick start and RDD guides to get familiar with Spark
@@ -184,18 +120,18 @@ https://spark.apache.org/docs/latest/rdd-programming-guide.html
 
 Spark has two main APIs, for this exercise we use the RDD one.
 
-    ```python
-    from pyspark.sql import SparkSession
-    from pyspark.sql import functions as f
+```python
+from pyspark.sql import SparkSession
+from pyspark.sql import functions as f
 
-    spark = SparkSession.builder.master('local').appName('BigDataTP').getOrCreate()
-    sc = spark.sparkContext
+spark = SparkSession.builder.master('local').appName('BigDataTP').getOrCreate()
+sc = spark.sparkContext
 
-    text_file = sc.textFile("dataset/wordcount/hamlet.txt")
-    text_file.collect()
+text_file = sc.textFile("dataset/wordcount/hamlet.txt")
+print(text_file.collect())
 
-    # Add your implementation here
-    ```
+# Add your implementation here
+```
 
 Once you have the current results, take a look at the running jobs in the spark console:
 http://localhost:4040/jobs/
@@ -210,10 +146,10 @@ You have to do the analysis for the month code assigned for your code, e.g. 2020
 You may find the identifiers for other columns here:
 https://github.com/aamend/spark-gdelt/blob/master/src/main/scala/com/aamend/spark/gdelt/GdeltParser.scala
 
-1. Download the files corresponding to the month of your pair e.g. 201901...
+1. Download the files corresponding to the month of your pair e.g. 202101...
 
-    wget http://data.gdeltproject.org/events/20200101.export.CSV.zip
-    wget http://data.gdeltproject.org/events/20200102.export.CSV.zip
+    wget http://data.gdeltproject.org/events/20210101.export.CSV.zip
+    wget http://data.gdeltproject.org/events/20210102.export.CSV.zip
     ...
 
 Unzip them and put them all the CSVs in the same directory
@@ -251,7 +187,7 @@ gdelt_parquet = spark.read.parquet('dataset/parquet')
 
 ```python
 gdelt.createTempView('gdelt')
-spark.sql("SELECT ...").collect()
+spark.sql("SELECT ... FROM gdelt ...").collect()
 ```
 
 Your results should be the same than in the Dataset version if not double check.
@@ -270,7 +206,6 @@ https://github.com/carrillo/Gdelt/tree/master/resources/staticTables
 
 You can find more info on join types on pyspark here:
 https://luminousmen.com/post/introduction-to-pyspark-join-types
-
 
 ## Deliverable
 
